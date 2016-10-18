@@ -19,12 +19,19 @@ public class ItemController {
 
     @RequestMapping("/items")
     public Iterable<Item> items() {
+    	//Returns all items
         return repository.findAll();
     }
 
   @RequestMapping("/category/{cat}")
   public Iterable<Item> itemsByCategory(@PathVariable("cat") String category) {
     Iterable<Item> items = repository.findByCategory(category);
+    return items;
+  }
+  
+  @RequestMapping("/item/{id}")
+  public Iterable<Item> itemsById(@PathVariable("id") Long id) {
+    Iterable<Item> items = repository.findById(id);
     return items;
   }
 }

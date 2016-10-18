@@ -14,7 +14,7 @@ import java.util.Map;
 @RefreshScope
 public class PriceConfig {
 
-  Map<String,String> prices = new HashMap<>();
+  Map<String,String> prices = new HashMap<String,String>();
 
   public Map<String, String> getPrices() {
     return prices;

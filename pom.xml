@@ -1,6 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.spring.cloud.samples</groupId>
@@ -15,8 +14,9 @@
 		<module>commerce-hystrix-dashboard</module>
 		<module>commerce-item-service</module>
 		<module>commerce-price-service</module>
-		<module>commerce-ui</module>
-	</modules>
+		<!-- <module>commerce-ui</module> -->
+    <module>commerce-ui</module>
+  </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
