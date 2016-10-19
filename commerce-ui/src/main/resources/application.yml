@@ -31,9 +31,9 @@ ribbon:
 
 hystrix:
   command:
-    randomFortune:
+    commerce:
       execution.isolation.thread.timeoutInMilliseconds: 2000
 
-fortunes:
+commerce:
   ribbon:
     listOfServers: localhost:8080

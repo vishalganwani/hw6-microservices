@@ -36,14 +36,8 @@ public class ItemProperties {
 	  }
 	
 
-	  public Price getRandomPriceFromProperty() {
-	    if(prices == null || prices.size() == 0) {
-	      return new Price("0000", "00000");
-	    }
-	    else {
-	      int index = RANDOM.nextInt(prices.size());
-	      return new Price(prices.get("1001"), prices.get("1001"));
-	    }
+	  public String getItemInfoFromProperty() {
+	      return "No items available. Please try again later!";
 	  }
 	
 	

@@ -42,6 +42,7 @@ public class ItemService {
     	return printItems();
     }
     
+    @HystrixCommand(fallbackMethod = "fallbackItemCat")
     public String getItemsByCategory(String category){
     	ResponseEntity<String> itemsResponse = 
   			  restTemplate.getForEntity("http://Item/category/"+category, String.class);
@@ -51,6 +52,7 @@ public class ItemService {
     	return printItems();
     }
     
+    @HystrixCommand(fallbackMethod = "fallbackItemId")
     public String getItemsById(Long id){
     	ResponseEntity<String> itemsResponse = 
   			  restTemplate.getForEntity("http://Item/item/"+id.toString(), String.class);
@@ -61,10 +63,17 @@ public class ItemService {
     }
 
     private String fallbackItem() {
-        return itemProperties.getRandomPriceFromProperty().toString();
-    	//return new Item(9999L, "This", "is", "a test");
+        return itemProperties.getItemInfoFromProperty().toString();
     }
     
+    private String fallbackItemId(Long id) {
+        return itemProperties.getItemInfoFromProperty().toString();
+    }
+
+    private String fallbackItemCat(String category) {
+        return itemProperties.getItemInfoFromProperty().toString();
+    }
+
     private void parseJasonResponse(String itemsResponse,String prices){
     	items = new ArrayList<Item>();
     	JSONArray jsonarray = new JSONArray(itemsResponse);
@@ -81,8 +90,7 @@ public class ItemService {
     		Long newId = items.get(i).getId();
         	String idPrice = extractPrice(prices,newId);
         	items.get(i).setPrice(idPrice);
-    	}    
-    	
+    	}
     }
     
     private String extractPrice(String prices, Long id){
@@ -97,6 +105,7 @@ public class ItemService {
     	for (int i=0; i<items.size(); i++){
     		response+=items.get(i).toString()+"\n";
     	}
+    	
     	return response;
     }
     
