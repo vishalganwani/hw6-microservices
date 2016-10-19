@@ -6,5 +6,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/dianagarcia/hw6-microservices
+          uri: https://github.com/vishalganwani/hw6-microservices
           searchPaths: config
