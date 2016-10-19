@@ -34,37 +34,30 @@ public class ItemService {
     
     @HystrixCommand(fallbackMethod = "fallbackItem")
     public String getItems() {
-    	ResponseEntity<String> items = 
+    	ResponseEntity<String> itemsResponse = 
     			  restTemplate.getForEntity("http://Item/items", String.class);
-    	
     	ResponseEntity<String> prices = 
   			  restTemplate.getForEntity("http://Price/prices", String.class);
-  	
-    	/*assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    	ObjectMapper mapper = new ObjectMapper();
-    	com.fasterxml.jackson.databind.JsonNode root = mapper.readTree(response.getBody());
-    	JsonNode name = root.path("name");
-    	assertThat(name.asText(), is("bar"));*/
-    	//return restTemplate.getForObject(url, responseType, urlVariables)
-        	//	getForObject("http://Item/random", Item.class);
-    	return items.getBody()+ prices.getBody();
-    	//return parseJasonResponse(items.getBody(),"");
+    	parseJasonResponse(itemsResponse.getBody(),prices.getBody());	
+    	return printItems();
     }
     
     public String getItemsByCategory(String category){
-    	ResponseEntity<String> items = 
+    	ResponseEntity<String> itemsResponse = 
   			  restTemplate.getForEntity("http://Item/category/"+category, String.class);
     	ResponseEntity<String> prices = 
     			  restTemplate.getForEntity("http://Price/prices", String.class);
-    	return items.getBody()+ prices.getBody();
+    	parseJasonResponse(itemsResponse.getBody(),prices.getBody());	
+    	return printItems();
     }
     
     public String getItemsById(Long id){
-    	ResponseEntity<String> item = 
+    	ResponseEntity<String> itemsResponse = 
   			  restTemplate.getForEntity("http://Item/item/"+id.toString(), String.class);
     	ResponseEntity<String> prices = 
     			  restTemplate.getForEntity("http://Price/prices", String.class);
-    	return item.getBody()+ prices.getBody();
+    	parseJasonResponse(itemsResponse.getBody(),prices.getBody());	
+    	return printItems();
     }
 
     private String fallbackItem() {
@@ -72,24 +65,39 @@ public class ItemService {
     	//return new Item(9999L, "This", "is", "a test");
     }
     
-    private String parseJasonResponse(String itemsResponse, String pricesResponse){
+    private void parseJasonResponse(String itemsResponse,String prices){
     	items = new ArrayList<Item>();
-    	//JSONObject jsonobj=new JSONObject(itemsResponse);
     	JSONArray jsonarray = new JSONArray(itemsResponse);
     	for (int i = 0; i < jsonarray.length(); i++) {
     	    JSONObject jsonobject = jsonarray.getJSONObject(i);
     	    Item tempItem=new Item();
-    	    tempItem.setId(Long.parseLong(jsonobject.getString("id")));
+    	    tempItem.setId(jsonobject.getLong("id"));
     	    tempItem.setName(jsonobject.getString("name"));
     	    tempItem.setDescription(jsonobject.getString("description"));
     	    tempItem.setCategory(jsonobject.getString("category"));
     	    items.add(tempItem);
     	}
+    	for (int i=0;i<items.size();i++){
+    		Long newId = items.get(i).getId();
+        	String idPrice = extractPrice(prices,newId);
+        	items.get(i).setPrice(idPrice);
+    	}    
+    	
+    }
+    
+    private String extractPrice(String prices, Long id){
+    	int start = prices.indexOf("\""+id.toString()+"\":")+id.toString().length()+4;    	
+    	int end = prices.indexOf("\"",start);
+    	String idPrice = prices.substring(start, end);    	
+    	return idPrice;
+    }
+    
+    private String printItems(){    	
     	String response="";
     	for (int i=0; i<items.size(); i++){
-    		System.out.println(items.get(i).toString()+"-------------------------------");
-    		response+=items.get(i).toString();
+    		response+=items.get(i).toString()+"\n";
     	}
     	return response;
     }
+    
 }
