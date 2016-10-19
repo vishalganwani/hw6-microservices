@@ -52,7 +52,6 @@ public class ItemService {
     	return printItems();
     }
     
-    
     @HystrixCommand(fallbackMethod = "fallbackItemId")
     public String getItemsById(Long id){
     	ResponseEntity<String> itemsResponse = 
