@@ -50,3 +50,10 @@ commerce:
     1047: 520
     1048: 620
     1049: 720
+
+
+logging:
+  level:
+    root: WARN
+    org.springframework.web: WARN
+    io.spring.cloud.samples: INFO
