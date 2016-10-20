@@ -74,6 +74,11 @@ public class ItemService {
         return itemProperties.getItemInfoFromProperty().toString();
     }
 
+    /**
+     * Parse the json response and populates the Items array
+     * @param itemsResponse Information with items
+     * @param prices All prices
+     */
     private void parseJasonResponse(String itemsResponse,String prices){
     	items = new ArrayList<Item>();
     	JSONArray jsonarray = new JSONArray(itemsResponse);
@@ -93,20 +98,33 @@ public class ItemService {
     	}
     }
     
+    /**
+     * Find price for an specific item
+     * @param prices String with all prices
+     * @param id Item id
+     * @return Price
+     */
     private String extractPrice(String prices, Long id){
-    	int start = prices.indexOf("\""+id.toString()+"\":")+id.toString().length()+4;    	
-    	int end = prices.indexOf("\"",start);
-    	String idPrice = prices.substring(start, end);    	
-    	return idPrice;
+    	if(prices!=null & prices.indexOf(":")!=-1)
+    	{
+	    	int start = prices.indexOf("\""+id.toString()+"\":")+id.toString().length()+4;    	
+	    	int end = prices.indexOf("\"",start);
+	    	if(start!=-1 & end!=-1)
+	    		return prices.substring(start, end); 
+    	}   	
+    	return "0";
     }
     
+    /**
+     * Creates a String with a html table of items
+     * @return String with a html table of items
+     */
     private String printItems(){    	
-    	String response="";
+    	String response="<table>  <tr>    <th>Item Id</th>    <th>Name</th>    <th>Description</th>    <th>Category</th>    <th>Price</th>  </tr>  ";
     	for (int i=0; i<items.size(); i++){
     		response+=items.get(i).toString()+"\n";
-    	}
-    	
-    	return response;
+    	}    	
+    	return response+"</table>";
     }
     
 }

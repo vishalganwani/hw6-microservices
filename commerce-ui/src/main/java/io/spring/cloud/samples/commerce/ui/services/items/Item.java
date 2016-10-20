@@ -62,13 +62,13 @@ public class Item {
 	
 	@Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Item{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", category='").append(category).append('\'');
-        sb.append(", price='").append(price).append('\'');
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("<tr>");
+        sb.append("<td>").append(id).append("</td>");
+        sb.append("<td>").append(name).append("</td>");
+        sb.append("<td>").append(description).append("</td>");
+        sb.append("<td>").append(category).append("</td>");
+        sb.append("<td>").append(price).append("</td>");
+        sb.append("</tr>");
         return sb.toString();
     }
 	
